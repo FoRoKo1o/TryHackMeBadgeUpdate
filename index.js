@@ -1,18 +1,23 @@
+
 const puppeteer = require('puppeteer');
 const simpleGit = require('simple-git');
 const path = require('path');
+const fs = require('fs');
 
 (async () => {
-  const url = 'ChangeToYoursTHMbadgeURL';
-  const outputPath = './thmBadge.png';
-  const repoPath = `ChangeToLocalRepoPath`;
+  const url = 'https://tryhackme.com/api/v2/badges/public-profile?userPublicId=3195715';
+  const outputPath = 'thmBadge.png';
+  const repoPath = `/home/FoRoKo1o`;
   const commitMessage = 'Automatyczny commit: Zaktualizowano screenshot';
-  
+
+ console.log(`test`);
   try {
     // Uruchom Puppeteer
     const browser = await puppeteer.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: '/usr/bin/chromium-browser',
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--disable-software-rasterizer'],
+//      dumpio: true,
     });
 
     const page = await browser.newPage();
@@ -32,6 +37,10 @@ const path = require('path');
     console.log(`Screenshot zapisany jako ${outputPath}`);
 
     await browser.close();
+
+    const destinationPath = path.join(repoPath, 'thmBadge.png');
+    fs.copyFileSync(outputPath, destinationPath);
+    console.log(`Zrzut ekranu skopiowany do repozytorium: ${destinationPath}`);
 
     const git = simpleGit(repoPath);
     await git.pull('origin', 'main');
