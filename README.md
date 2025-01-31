@@ -1,4 +1,4 @@
-# TryHackMeBadgeUpdate - tests in progress!
+# TryHackMeBadgeUpdate
 
 Since TryHackMe shares user profile badge only as `iframe` or static IMG, that has to be manually updated. I came up with this simple Node.js script.
 
